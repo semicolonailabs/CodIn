@@ -1,0 +1,16 @@
+node_modules
+out
+.vscode-test/
+*.vsix
+
+# Environment variables
+.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache
+.nyc_output
+coverage

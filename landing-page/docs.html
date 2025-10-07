@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodIn Documentation</title>
+    <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+    <div class="docs-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="logo.png" alt="CodIn Logo">
+                <span>CodIn Docs</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="#usage">Usage</a></li>
+                    <li><a href="#languages">Supported Languages</a></li>
+                    <li><a href="#configuration">Configuration</a></li>
+                    <li><a href="#troubleshooting">Troubleshooting</a></li>
+                </ul>
+            </nav>
+            <div class="version-info">
+                <span>Version 1.0.0</span>
+                <span>Last updated: 2025-09-30</span>
+            </div>
+        </aside>
+        <main class="content">
+            <section id="introduction">
+                <h1>Introduction</h1>
+                <p>CodIn is a VS Code extension that brings the power of AI to your code editor. It allows you to select any code snippet and get a clear, concise explanation in plain English. This helps you understand complex code faster, learn new languages, and improve your overall productivity.</p>
+            </section>
+            <section id="installation">
+                <h2>Installation</h2>
+                <p>You can install CodIn directly from the Visual Studio Code Marketplace.</p>
+                <ol>
+                    <li>Open Visual Studio Code.</li>
+                    <li>Go to the Extensions view by clicking on the Extensions icon in the Activity Bar on the side of the window or by pressing <code>Ctrl+Shift+X</code>.</li>
+                    <li>Search for "CodIn".</li>
+                    <li>Click the "Install" button.</li>
+                </ol>
+            </section>
+            <section id="usage">
+                <h2>Usage</h2>
+                <p>Using CodIn is simple and intuitive:</p>
+                <ol>
+                    <li>Open any code file in a supported language.</li>
+                    <li>Select the code snippet you want to understand.</li>
+                    <li>Right-click on the selection.</li>
+                    <li>Choose "Explain Code" from the context menu.</li>
+                    <li>The AI-generated explanation will appear in a new webview panel.</li>
+                </ol>
+            </section>
+            <section id="languages">
+                <h2>Supported Languages</h2>
+                <p>CodIn supports a wide range of popular programming languages:</p>
+                <ul>
+                    <li>Python</li>
+                    <li>JavaScript</li>
+                    <li>Java</li>
+                    <li>C#</li>
+                    <li>C++</li>
+                    <li>Go</li>
+                    <li>Ruby</li>
+                    <li>PHP</li>
+                    <li>TypeScript</li>
+                    <li>Swift</li>
+                </ul>
+            </section>
+            <section id="configuration">
+                <h2>Configuration</h2>
+                <p>CodIn requires an OpenAI API key to function. You need to set this key as an environment variable named <code>OPENAI_API_KEY</code>.</p>
+                <pre><code>export OPENAI_API_KEY="your-api-key-here"</code></pre>
+                <p>Make sure to replace <code>"your-api-key-here"</code> with your actual OpenAI API key. You can add this line to your shell's configuration file (e.g., <code>.zshrc</code>, <code>.bash_profile</code>) to make it permanent.</p>
+            </section>
+            <section id="troubleshooting">
+                <h2>Troubleshooting</h2>
+                <p>If you encounter any issues with CodIn, here are a few things to check:</p>
+                <ul>
+                    <li><strong>No explanation appears:</strong> Ensure you have a valid OpenAI API key set as the <code>OPENAI_API_KEY</code> environment variable.</li>
+                    <li><strong>"Explain Code" option is missing:</strong> Make sure you have selected a piece of code before right-clicking.</li>
+                    <li><strong>Error message on explanation:</strong> Check your internet connection and ensure the OpenAI API is accessible.</li>
+                </ul>
+                <p>If you continue to experience problems, please report a bug on our GitHub repository.</p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
