@@ -33,40 +33,6 @@
 - **Clean Popups**: VS Code theme-compatible explanation panels
 - **Language Indicators**: Shows current language in UI elements
 
-## 🚀 Quick Start
-
-### 1. **Install Extension**
-```bash
-# Download codin-1.2.3.vsix from releases
-# In VS Code: Cmd+Shift+P → "Extensions: Install from VSIX"
-```
-
-### 2. **Set Your API Key Securely**
-```bash
-# Command Palette (Cmd+Shift+P)
-CodIn: Set OpenAI API Key
-# Enter your OpenAI API key (password-masked for security)
-```
-
-**Get Your API Key:**
-1. Visit [OpenAI API Keys](https://platform.openai.com/api-keys)
-2. Create new secret key
-3. Copy key (starts with `sk-`)
-
-### 3. **Select Your Language**
-```bash
-# Command Palette (Cmd+Shift+P)  
-CodIn: Select Explanation Language
-# Choose from 15 supported languages
-```
-
-### 4. **Explain Code**
-1. **Select any code snippet**
-2. **See floating `🤖 Explain Code` button** above selection
-3. **Click to get instant explanation** in your chosen language!
-
-![Usage Demo](https://via.placeholder.com/800x400?text=Usage+Demo)
-
 ## 🎯 **How to Use**
 
 ### **Method 1: CodeLens (Floating Button)**
@@ -221,16 +187,5 @@ Quick links:
 - 🔧 [Pull Requests](https://github.com/semicolonailabs/CodIn/pulls)
 - 📚 [Documentation](https://github.com/semicolonailabs/CodIn/wiki)
 
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
-## 🙋‍♂️ Support
-
-- 📧 Email: support@semicolonailabs.com
-- 🐛 Issues: [GitHub Issues](https://github.com/semicolonailabs/CodIn/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/semicolonailabs/CodIn/discussions)
-
----
-
 **Enjoy coding with CodIn! 🎉**
+# Built with ❤️ and ☕ by [Saky](https://saky.space) !
