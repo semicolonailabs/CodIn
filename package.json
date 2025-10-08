@@ -2,7 +2,7 @@
     "name": "codin",
     "displayName": "CodIn - AI Code Explainer",
     "description": "Get instant AI-powered explanations for any code snippet. Right-click, select 'Explain Code', and understand complex code in seconds.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "publisher": "semicolonailabs",
     "author": {
         "name": "SemicolonAI Labs"
@@ -56,6 +56,16 @@
                 "command": "extension.explainCode",
                 "title": "CodIn: Explain Code",
                 "category": "CodIn"
+            },
+            {
+                "command": "extension.selectLanguage",
+                "title": "CodIn: Select Explanation Language",
+                "category": "CodIn"
+            },
+            {
+                "command": "extension.explainCodeWithLanguage",
+                "title": "CodIn: Explain Code in Selected Language",
+                "category": "CodIn"
             }
         ],
         "menus": {
@@ -64,8 +74,64 @@
                     "when": "editorHasSelection",
                     "command": "extension.explainCode",
                     "group": "1_modification@1"
+                },
+                {
+                    "command": "extension.selectLanguage",
+                    "group": "1_modification@2"
+                }
+            ],
+            "commandPalette": [
+                {
+                    "command": "extension.explainCode",
+                    "when": "editorHasSelection"
+                },
+                {
+                    "command": "extension.selectLanguage"
                 }
             ]
+        },
+        "configuration": {
+            "type": "object",
+            "title": "CodIn Configuration",
+            "properties": {
+                "codin.enableCodeLens": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable floating 'Explain Code' button above selected code"
+                },
+                "codin.enableCodeActions": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable 'Explain Code' in quick actions menu (lightbulb)"
+                },
+                "codin.explanationLanguage": {
+                    "type": "string",
+                    "default": "English",
+                    "enum": [
+                        "English",
+                        "Bengali",
+                        "Melayu",
+                        "Arabic",
+                        "Spanish",
+                        "French",
+                        "German",
+                        "Hindi",
+                        "Chinese (Simplified)",
+                        "Japanese",
+                        "Korean",
+                        "Portuguese",
+                        "Russian",
+                        "Italian",
+                        "Dutch"
+                    ],
+                    "description": "Preferred language for code explanations"
+                },
+                "codin.showLanguageInPopup": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show selected language at the top of explanation popup"
+                }
+            }
         }
     },
     "scripts": {

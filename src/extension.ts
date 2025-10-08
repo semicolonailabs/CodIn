@@ -3,6 +3,25 @@ import * as path from 'path';
 import * as fs from 'fs';
 import fetch from 'node-fetch';
 
+// Supported languages with their display names and prompts
+const SUPPORTED_LANGUAGES = {
+    'English': 'English',
+    'Bengali': 'Bengali (বাংলা)',
+    'Melayu': 'Malay (Bahasa Melayu)',
+    'Arabic': 'Arabic (العربية)',
+    'Spanish': 'Spanish (Español)',
+    'French': 'French (Français)',
+    'German': 'German (Deutsch)',
+    'Hindi': 'Hindi (हिंदी)',
+    'Chinese (Simplified)': 'Chinese Simplified (简体中文)',
+    'Japanese': 'Japanese (日本語)',
+    'Korean': 'Korean (한국어)',
+    'Portuguese': 'Portuguese (Português)',
+    'Russian': 'Russian (Русский)',
+    'Italian': 'Italian (Italiano)',
+    'Dutch': 'Dutch (Nederlands)'
+};
+
 // Load environment variables
 function loadEnvFile(workspaceFolder: string): { [key: string]: string } {
     const envPath = path.join(workspaceFolder, '.env');
@@ -30,7 +49,135 @@ function loadEnvFile(workspaceFolder: string): { [key: string]: string } {
     return env;
 }
 
+// CodeAction Provider for floating "Explain Code" button
+class CodInCodeActionProvider implements vscode.CodeActionProvider {
+    provideCodeActions(
+        _document: vscode.TextDocument,
+        _range: vscode.Range | vscode.Selection,
+        _context: vscode.CodeActionContext,
+        _token: vscode.CancellationToken
+    ): vscode.CodeAction[] | undefined {
+        
+        // Only show action if there's a selection
+        const editor = vscode.window.activeTextEditor;
+        if (!editor || editor.selection.isEmpty) {
+            return undefined;
+        }
+
+        // Get current language preference
+        const config = vscode.workspace.getConfiguration('codin');
+        const currentLanguage = config.get<string>('explanationLanguage', 'English');
+        
+        // Create the "Explain Code" action with language info
+        const explainAction = new vscode.CodeAction(`💡 Explain Code (${currentLanguage})`, vscode.CodeActionKind.QuickFix);
+        explainAction.command = {
+            title: 'Explain Code',
+            command: 'extension.explainCode'
+        };
+
+        // Create "Select Language" action
+        const selectLanguageAction = new vscode.CodeAction('🌍 Select Explanation Language', vscode.CodeActionKind.QuickFix);
+        selectLanguageAction.command = {
+            title: 'Select Language',
+            command: 'extension.selectLanguage'
+        };
+
+        // Make explain action preferred so it appears first
+        explainAction.isPreferred = true;
+
+        return [explainAction, selectLanguageAction];
+    }
+}
+
+// CodeLens Provider for inline "Explain Code" button
+class CodInCodeLensProvider implements vscode.CodeLensProvider {
+    private _onDidChangeCodeLenses: vscode.EventEmitter<void> = new vscode.EventEmitter<void>();
+    public readonly onDidChangeCodeLenses: vscode.Event<void> = this._onDidChangeCodeLenses.event;
+
+    provideCodeLenses(document: vscode.TextDocument, _token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor || editor.document !== document || editor.selection.isEmpty) {
+            return [];
+        }
+
+        // Create a CodeLens at the start of the selection
+        const selectionStart = editor.selection.start;
+        const range = new vscode.Range(selectionStart, selectionStart);
+        
+        // Get current language preference
+        const config = vscode.workspace.getConfiguration('codin');
+        const currentLanguage = config.get<string>('explanationLanguage', 'English');
+        
+        const codeLens = new vscode.CodeLens(range);
+        codeLens.command = {
+            title: `🤖 Explain Code (${currentLanguage})`,
+            command: 'extension.explainCode'
+        };
+
+        return [codeLens];
+    }
+
+    refresh(): void {
+        this._onDidChangeCodeLenses.fire();
+    }
+}
+
 export function activate(context: vscode.ExtensionContext) {
+    // Create CodeLens provider instance
+    const codeLensProvider = new CodInCodeLensProvider();
+
+    // Register the CodeAction provider for all file types
+    const codeActionProvider = vscode.languages.registerCodeActionsProvider(
+        { scheme: 'file' }, // Works for all file types
+        new CodInCodeActionProvider(),
+        {
+            providedCodeActionKinds: [vscode.CodeActionKind.QuickFix, vscode.CodeActionKind.Empty]
+        }
+    );
+
+    // Register CodeLens provider for all file types
+    const codeLensProviderDisposable = vscode.languages.registerCodeLensProvider(
+        { scheme: 'file' },
+        codeLensProvider
+    );
+
+    // Listen for selection changes to refresh CodeLens
+    const selectionChangeListener = vscode.window.onDidChangeTextEditorSelection(() => {
+        codeLensProvider.refresh();
+    });
+
+    // Register language selection command
+    const selectLanguageDisposable = vscode.commands.registerCommand('extension.selectLanguage', async () => {
+        const languageOptions = Object.entries(SUPPORTED_LANGUAGES).map(([key, display]) => ({
+            label: display,
+            description: key === vscode.workspace.getConfiguration('codin').get('explanationLanguage') ? '(Current)' : '',
+            value: key
+        }));
+
+        const selected = await vscode.window.showQuickPick(languageOptions, {
+            placeHolder: 'Select your preferred language for code explanations',
+            matchOnDescription: true,
+            matchOnDetail: true
+        });
+
+        if (selected) {
+            const config = vscode.workspace.getConfiguration('codin');
+            await config.update('explanationLanguage', selected.value, vscode.ConfigurationTarget.Global);
+            
+            // Refresh CodeLens to show new language
+            codeLensProvider.refresh();
+            
+            vscode.window.showInformationMessage(
+                `Code explanations will now be generated in ${selected.label}`,
+                'Test with Code'
+            ).then((action) => {
+                if (action === 'Test with Code') {
+                    vscode.commands.executeCommand('extension.explainCode');
+                }
+            });
+        }
+    });
+
     // Register the explain code command
     let disposable = vscode.commands.registerCommand('extension.explainCode', async () => {
         // Get workspace folder
@@ -114,9 +261,14 @@ OPENAI_API_KEY=your_openai_api_key_here`;
 
             try {
                 progress.report({ increment: 50, message: "Getting AI response..." });
-                const explanation = await getExplanation(code, apiKey!);
+                
+                // Get current language preference
+                const config = vscode.workspace.getConfiguration('codin');
+                const selectedLanguage = config.get<string>('explanationLanguage', 'English');
+                
+                const explanation = await getExplanation(code, apiKey!, selectedLanguage);
                 progress.report({ increment: 100, message: "Complete!" });
-                panel.webview.html = getWebviewContent(explanation, code);
+                panel.webview.html = getWebviewContent(explanation, code, selectedLanguage);
             } catch (error: any) {
                 console.error('Error explaining code:', error);
                 vscode.window.showErrorMessage(`Error getting explanation: ${error.message}`);
@@ -126,16 +278,47 @@ OPENAI_API_KEY=your_openai_api_key_here`;
     });
 
     context.subscriptions.push(disposable);
+    context.subscriptions.push(selectLanguageDisposable);
+    context.subscriptions.push(codeActionProvider);
+    context.subscriptions.push(codeLensProviderDisposable);
+    context.subscriptions.push(selectionChangeListener);
 }
 
-async function getExplanation(code: string, apiKey: string): Promise<string> {
-    const prompt = `Explain the following code snippet in simple, clear language. Focus on what the code does, how it works, and any important concepts:
+// Helper function to get language-specific instructions for AI
+function getLanguageInstructions(language: string): string {
+    const instructions: { [key: string]: string } = {
+        'English': 'You are a helpful coding assistant that explains code clearly and concisely in English.',
+        'Bengali': 'আপনি একজন সহায়ক কোডিং সহায়ক যিনি বাংলায় স্পষ্ট এবং সংক্ষিপ্তভাবে কোড ব্যাখ্যা করেন।',
+        'Melayu': 'Anda adalah pembantu pengekodan yang membantu menjelaskan kod dengan jelas dan ringkas dalam Bahasa Melayu.',
+        'Arabic': 'أنت مساعد برمجة مفيد يشرح الكود بوضوح وإيجاز باللغة العربية.',
+        'Spanish': 'Eres un asistente de programación útil que explica el código de manera clara y concisa en español.',
+        'French': 'Vous êtes un assistant de codage utile qui explique le code clairement et de manière concise en français.',
+        'German': 'Du bist ein hilfreicher Coding-Assistent, der Code klar und prägnant auf Deutsch erklärt.',
+        'Hindi': 'आप एक सहायक कोडिंग सहायक हैं जो हिंदी में स्पष्ट और संक्षिप्त रूप से कोड समझाते हैं।',
+        'Chinese (Simplified)': '你是一个有用的编程助手，用简体中文清晰简洁地解释代码。',
+        'Japanese': 'あなたは日本語でコードを明確かつ簡潔に説明する有用なコーディングアシスタントです。',
+        'Korean': '당신은 한국어로 코드를 명확하고 간결하게 설명하는 유용한 코딩 도우미입니다.',
+        'Portuguese': 'Você é um assistente de codificação útil que explica o código de forma clara e concisa em português.',
+        'Russian': 'Вы полезный помощник по программированию, который ясно и кратко объясняет код на русском языке.',
+        'Italian': 'Sei un assistente di codifica utile che spiega il codice chiaramente e concisamente in italiano.',
+        'Dutch': 'Je bent een nuttige codeerassistent die code duidelijk en beknopt uitlegt in het Nederlands.'
+    };
+
+    return instructions[language] || instructions['English'];
+}
+
+async function getExplanation(code: string, apiKey: string, language: string = 'English'): Promise<string> {
+    const languageInstructions = getLanguageInstructions(language);
+    
+    const prompt = `${languageInstructions}
+
+Explain the following code snippet in simple, clear language. Focus on what the code does, how it works, and any important concepts:
 
 \`\`\`
 ${code}
 \`\`\`
 
-Please provide a concise but thorough explanation.`;
+Please provide a concise but thorough explanation in ${language}.`;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
@@ -148,7 +331,7 @@ Please provide a concise but thorough explanation.`;
             messages: [
                 {
                     role: "system",
-                    content: "You are a helpful coding assistant that explains code clearly and concisely. Focus on functionality, purpose, and key concepts."
+                    content: languageInstructions + " Focus on functionality, purpose, and key concepts."
                 },
                 {
                     role: "user",
@@ -180,7 +363,10 @@ Please provide a concise but thorough explanation.`;
     return data.choices[0].message.content.trim();
 }
 
-function getWebviewContent(explanation: string, code: string): string {
+function getWebviewContent(explanation: string, code: string, language: string = 'English'): string {
+    const config = vscode.workspace.getConfiguration('codin');
+    const showLanguage = config.get<boolean>('showLanguageInPopup', true);
+    const languageDisplay = (SUPPORTED_LANGUAGES as any)[language] || language;
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -240,6 +426,9 @@ function getWebviewContent(explanation: string, code: string): string {
     <body>
         <div class="header">
             <h2>🤖 Code Explanation</h2>
+            ${showLanguage ? `<div style="font-size: 14px; color: var(--vscode-descriptionForeground); margin-top: 5px;">
+                🌍 Language: ${languageDisplay}
+            </div>` : ''}
         </div>
         
         <h3>📝 Selected Code:</h3>
@@ -248,6 +437,10 @@ function getWebviewContent(explanation: string, code: string): string {
         <h3>💡 Explanation:</h3>
         <div class="explanation">
             ${explanation.replace(/\n/g, '<br>')}
+        </div>
+        
+        <div style="margin-top: 20px; padding: 10px; background-color: var(--vscode-textBlockQuote-background); border-radius: 4px; font-size: 12px; color: var(--vscode-descriptionForeground);">
+            💡 Want explanations in a different language? Use <strong>Cmd+Shift+P</strong> → <strong>"CodIn: Select Explanation Language"</strong>
         </div>
     </body>
     </html>`;
