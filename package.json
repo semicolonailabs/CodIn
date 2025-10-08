@@ -2,7 +2,7 @@
     "name": "codin",
     "displayName": "CodIn - AI Code Explainer",
     "description": "Get instant AI-powered explanations for any code snippet in 15+ languages with secure API key management. Select code → Click floating button → Understand in your native language!",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "publisher": "semicolonailabs",
     "author": {
         "name": "SemicolonAI Labs"
@@ -42,6 +42,7 @@
     ],
     "icon": "CodIn.png",
     "activationEvents": [
+        "onStartupFinished",
         "onLanguage:javascript",
         "onLanguage:typescript",
         "onLanguage:python",
@@ -53,7 +54,11 @@
         "onLanguage:rust",
         "onLanguage:php",
         "onLanguage:ruby",
-        "onCommand:extension.explainCode"
+        "onCommand:extension.explainCode",
+        "onCommand:extension.setApiKey",
+        "onCommand:extension.removeApiKey",
+        "onCommand:extension.checkApiKey",
+        "onCommand:extension.selectLanguage"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -66,11 +71,6 @@
             {
                 "command": "extension.selectLanguage",
                 "title": "CodIn: Select Explanation Language",
-                "category": "CodIn"
-            },
-            {
-                "command": "extension.explainCodeWithLanguage",
-                "title": "CodIn: Explain Code in Selected Language",
                 "category": "CodIn"
             },
             {

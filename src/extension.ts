@@ -147,6 +147,8 @@ function validateApiKey(apiKey: string): boolean {
 }
 
 export function activate(context: vscode.ExtensionContext) {
+    console.log('CodIn extension is being activated...');
+    
     // Create CodeLens provider instance
     const codeLensProvider = new CodInCodeLensProvider();
 
@@ -408,6 +410,7 @@ export function activate(context: vscode.ExtensionContext) {
         });
     });
 
+    // Add all disposables to subscriptions
     context.subscriptions.push(disposable);
     context.subscriptions.push(setApiKeyDisposable);
     context.subscriptions.push(removeApiKeyDisposable);
@@ -416,6 +419,13 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(codeActionProvider);
     context.subscriptions.push(codeLensProviderDisposable);
     context.subscriptions.push(selectionChangeListener);
+    
+    console.log('CodIn extension activated successfully! Commands registered:');
+    console.log('- extension.explainCode');
+    console.log('- extension.setApiKey');
+    console.log('- extension.removeApiKey');
+    console.log('- extension.checkApiKey');
+    console.log('- extension.selectLanguage');
 }
 
 // Helper function to get language-specific instructions for AI

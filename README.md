@@ -1,53 +1,107 @@
-# CodIn - AI-Powered Code Explainer
+# 🤖 CodIn - AI Code Explainer v1.2.0
 
-🤖 **Understand any code in seconds!** CodIn is a powerful VS Code extension that provides instant AI-powered explanations for any code snippet, right in your editor.
+**Get instant AI-powered explanations for any code snippet in 15+ languages with secure API key management!**
+
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/semicolonailabs/CodIn)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![VS Code](https://img.shields.io/badge/VS%20Code-1.70+-orange.svg)](https://code.visualstudio.com/)
 
 ![CodIn Logo](CodIn.png)
 
-## ✨ Features
+## 🌟 **Features**
 
-- 🚀 **Instant Code Explanations**: Select any code snippet and get AI-powered explanations instantly
-- 🌍 **Multi-Language Support**: Works with Python, JavaScript, TypeScript, C++, Java, C#, Go, Ruby, PHP, Swift, and more
-- 🎨 **Beautiful UI**: Modern webview panel with VS Code theme integration
-- 🔒 **Secure**: API keys stored securely in VS Code settings
-- ⚡ **Fast & Reliable**: Built with modern OpenAI GPT-3.5-turbo API
-- 📱 **Responsive**: Clean, mobile-friendly interface
+### 🎯 **Smart Code Explanation**
+- **Multiple Access Methods**: CodeLens buttons, Quick Actions, Context Menu, Command Palette
+- **Real-time Explanations**: Instant AI responses with progress indicators
+- **Cross-Language Support**: Works with Python, JavaScript, TypeScript, Java, C++, and 50+ languages
+
+### 🌍 **Multi-Language Support (15 Languages)**
+- **English** • **Bengali** (বাংলা) • **Arabic** (العربية) • **Spanish** • **French**
+- **German** • **Hindi** • **Chinese** • **Japanese** • **Korean** 
+- **Portuguese** • **Russian** • **Italian** • **Dutch** • **Malay**
+- **Native AI Prompts**: Culturally appropriate explanations with local technical terms
+
+### � **Secure API Key Management**
+- **VS Code Secret Storage**: Encrypted, cross-platform security
+- **Command Palette Setup**: No manual file editing required
+- **Password-Masked Input**: Keys never visible on screen
+- **Auto-Migration**: Seamless upgrade from .env files
+
+### 🎨 **Professional UI**
+- **Floating CodeLens Buttons**: `🤖 Explain Code` appears above selected code
+- **Quick Actions**: Press `Cmd+.` for lightbulb menu integration
+- **Clean Popups**: VS Code theme-compatible explanation panels
+- **Language Indicators**: Shows current language in UI elements
 
 ## 🚀 Quick Start
 
-### 1. Installation
+### 1. **Install Extension**
+```bash
+# Download codin-1.2.0.vsix from releases
+# In VS Code: Cmd+Shift+P → "Extensions: Install from VSIX"
+```
 
-Install from the VS Code Marketplace or:
-1. Download the `.vsix` file
-2. Run `code --install-extension codin-1.0.0.vsix`
+### 2. **Set Your API Key Securely**
+```bash
+# Command Palette (Cmd+Shift+P)
+CodIn: Set OpenAI API Key
+# Enter your OpenAI API key (password-masked for security)
+```
 
-### 2. Setup
+**Get Your API Key:**
+1. Visit [OpenAI API Keys](https://platform.openai.com/api-keys)
+2. Create new secret key
+3. Copy key (starts with `sk-`)
 
-1. Get your OpenAI API key from [OpenAI Platform](https://platform.openai.com/)
-2. Create a `.env` file in your workspace root
-3. Add your API key: `OPENAI_API_KEY=sk-your_actual_api_key_here`
-4. The extension will automatically detect and use the API key from the `.env` file
+### 3. **Select Your Language**
+```bash
+# Command Palette (Cmd+Shift+P)  
+CodIn: Select Explanation Language
+# Choose from 15 supported languages
+```
 
-### 3. Usage
-
-1. **Select Code**: Highlight any code snippet in your editor
-2. **Right-Click**: Choose "Explain Code" from the context menu  
-3. **Get Explanation**: View the AI-generated explanation in the side panel
+### 4. **Explain Code**
+1. **Select any code snippet**
+2. **See floating `🤖 Explain Code` button** above selection
+3. **Click to get instant explanation** in your chosen language!
 
 ![Usage Demo](https://via.placeholder.com/800x400?text=Usage+Demo)
 
-## 💡 Example
+## 🎯 **How to Use**
 
-Select this Python code:
+### **Method 1: CodeLens (Floating Button)**
+- Select code → See `🤖 Explain Code (Language)` button above
+- Click to get explanation in side panel
+
+### **Method 2: Quick Actions**  
+- Select code → Press `Cmd+.` → Choose `💡 Explain Code`
+- Or click the lightbulb icon
+
+### **Method 3: Context Menu**
+- Select code → Right-click → `CodIn: Explain Code`
+
+### **Method 4: Command Palette**
+- Select code → `Cmd+Shift+P` → `CodIn: Explain Code`
+
+## 💡 **Multi-Language Example**
+
+**Select this Python code:**
 ```python
-def fibonacci(n):
-    if n <= 1:
-        return n
-    return fibonacci(n-1) + fibonacci(n-2)
+def factorial(n):
+    if n < 0:
+        raise ValueError("Factorial not defined for negative numbers")
+    return 1 if n <= 1 else n * factorial(n - 1)
 ```
 
-**CodIn explains:**
-> "This function calculates the nth Fibonacci number using recursion. It returns n if n is 0 or 1 (base cases), otherwise it returns the sum of the two previous Fibonacci numbers by calling itself recursively..."
+**CodIn explains in your chosen language:**
+
+🇺🇸 **English**: "This function calculates the factorial of a number using recursion..."
+
+🇧🇩 **Bengali**: "এই ফাংশনটি রিকার্শন ব্যবহার করে একটি সংখ্যার ফ্যাক্টোরিয়াল গণনা করে..."
+
+🇸🇦 **Arabic**: "تحسب هذه الدالة العاملية لرقم باستخدام العودية..."
+
+🇪🇸 **Spanish**: "Esta función calcula el factorial de un número usando recursión..."
 
 ## 🛠️ Supported Languages
 
@@ -63,24 +117,49 @@ def fibonacci(n):
 - Swift (.swift)
 - And many more!
 
-## ⚙️ Configuration
+## 🔐 **API Key Management**
 
-Create a `.env` file in your workspace root:
+### **Secure Setup Commands:**
+- `CodIn: Set OpenAI API Key` - Password-masked secure setup
+- `CodIn: Check API Key Status` - View connection status  
+- `CodIn: Remove OpenAI API Key` - Safe removal with confirmation
 
-```bash
-# .env
-OPENAI_API_KEY=sk-your_actual_api_key_here
+### **Security Features:**
+- ✅ **VS Code Secret Storage** (encrypted)
+- ✅ **Password-masked input** 
+- ✅ **No plain text storage**
+- ✅ **Auto-migration from .env files**
+
+## ⚙️ **Configuration**
+
+### **Available Settings:**
+```json
+{
+  "codin.explanationLanguage": "English",
+  "codin.showLanguageInPopup": true,
+  "codin.enableCodeLens": true,
+  "codin.enableCodeActions": true
+}
 ```
 
-**Note**: The `.env` file should be added to your `.gitignore` to keep your API key secure and prevent it from being committed to version control.
+**Access Settings:** `Cmd+,` → Search "codin"
 
-## 🔒 Privacy & Security
+## �️ **Privacy & Security**
 
-- API keys are stored locally in your `.env` file (never committed to version control)
-- Code snippets are only sent to OpenAI for explanation  
-- No data is stored or logged by CodIn
-- Full compliance with OpenAI's usage policies
-- `.env` files are automatically excluded from extension packages
+### **Enterprise-Grade Security:**
+- **Encrypted Storage**: API keys stored using VS Code Secret Storage (encrypted at rest)
+- **No Plain Text**: Keys never stored in files or visible on screen
+- **Secure Transmission**: HTTPS-only communication with OpenAI
+- **Privacy First**: Code snippets only sent to OpenAI for explanation
+- **No Logging**: CodIn doesn't store or log any user data
+- **Cross-Platform**: Secure on macOS, Windows, and Linux
+
+### **What We Don't Store:**
+- ❌ API keys in plain text
+- ❌ User code snippets  
+- ❌ Explanation history
+- ❌ Personal information
+- ❌ Usage analytics
 
 ## 🤝 Contributing
 
