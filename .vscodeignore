@@ -19,9 +19,11 @@ coverage
 node_modules
 .vscode/
 landing-page/
+test-workspace/
 **/*.ts
 !**/*.d.ts
 tsconfig.json
 .git
 *.vsix
 .env
+.mypy_cache/

@@ -35,13 +35,27 @@
         "Other"
     ],
     "icon": "CodIn.png",
-    "activationEvents": [],
+    "activationEvents": [
+        "onLanguage:javascript",
+        "onLanguage:typescript",
+        "onLanguage:python",
+        "onLanguage:java",
+        "onLanguage:cpp",
+        "onLanguage:c",
+        "onLanguage:csharp",
+        "onLanguage:go",
+        "onLanguage:rust",
+        "onLanguage:php",
+        "onLanguage:ruby",
+        "onCommand:extension.explainCode"
+    ],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
             {
                 "command": "extension.explainCode",
-                "title": "Explain Code"
+                "title": "CodIn: Explain Code",
+                "category": "CodIn"
             }
         ],
         "menus": {
@@ -49,7 +63,7 @@
                 {
                     "when": "editorHasSelection",
                     "command": "extension.explainCode",
-                    "group": "navigation"
+                    "group": "1_modification@1"
                 }
             ]
         }

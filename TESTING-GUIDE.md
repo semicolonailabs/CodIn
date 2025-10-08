@@ -1,0 +1,66 @@
+#!/bin/bash
+
+echo "🧪 CodIn Extension Testing Guide"
+echo "================================"
+echo ""
+
+echo "📋 MANUAL TESTING STEPS:"
+echo ""
+
+echo "1. 🔧 INSTALL THE EXTENSION:"
+echo "   - Open Terminal in this directory"
+echo "   - Run: code --install-extension codin-1.0.0.vsix --force"
+echo "   - Or drag codin-1.0.0.vsix into VS Code Extensions panel"
+echo ""
+
+echo "2. 🔄 RELOAD VS CODE:"
+echo "   - Press Cmd+Shift+P (Command Palette)"
+echo "   - Type 'Developer: Reload Window'"
+echo "   - Press Enter"
+echo ""
+
+echo "3. ✅ VERIFY INSTALLATION:"
+echo "   - Press Cmd+Shift+P"
+echo "   - Type 'Extensions: Show Installed Extensions'"
+echo "   - Look for 'CodIn - AI Code Explainer'"
+echo "   - Make sure it's ENABLED (not disabled)"
+echo ""
+
+echo "4. 🧪 TEST METHOD 1 - Context Menu:"
+echo "   - Open test-workspace/factorial.py"
+echo "   - SELECT some code (highlight it with mouse)"
+echo "   - RIGHT-CLICK on the selected code"
+echo "   - Look for 'CodIn: Explain Code' in menu"
+echo ""
+
+echo "5. 🧪 TEST METHOD 2 - Command Palette:"
+echo "   - SELECT some code first"
+echo "   - Press Cmd+Shift+P"
+echo "   - Type 'CodIn: Explain Code'"
+echo "   - Press Enter"
+echo ""
+
+echo "6. 🔍 TROUBLESHOOTING:"
+echo "   - If menu doesn't appear: Check if text is SELECTED"
+echo "   - If command fails: Check .env file has valid API key"
+echo "   - Press Cmd+Option+I for Developer Console"
+echo "   - Look for red error messages"
+echo ""
+
+echo "📝 EXPECTED RESULT:"
+echo "   - Side panel opens with 'Code Explanation'"
+echo "   - Shows selected code and AI explanation"
+echo ""
+
+echo "🆘 IF STILL NOT WORKING:"
+echo "   1. Check VS Code version (should be 1.70.0+)"
+echo "   2. Try uninstalling all 'codin' extensions first"
+echo "   3. Check if .env file exists in test-workspace/"
+echo "   4. Verify API key starts with 'sk-'"
+echo ""
+
+echo "📞 Need help? Check these:"
+echo "   - Extension appears in Extensions panel"
+echo "   - No errors in Developer Console"
+echo "   - Text is properly selected before right-click"
+echo "   - .env file has valid OpenAI API key"
