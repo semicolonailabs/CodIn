@@ -188,4 +188,4 @@ Quick links:
 - 📚 [Documentation](https://github.com/semicolonailabs/CodIn/wiki)
 
 **Enjoy coding with CodIn! 🎉**
-# Built with ❤️ and ☕ by [Saky](https://saky.space) !
+# Built with ❤️ and ☕ by [Saky](https://saky.space) !# CodIn
