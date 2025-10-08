@@ -1,7 +1,7 @@
 {
     "name": "codin",
     "displayName": "CodIn - AI Code Explainer",
-    "description": "Get instant AI-powered explanations for any code snippet. Right-click, select 'Explain Code', and understand complex code in seconds.",
+    "description": "Get instant AI-powered explanations for any code snippet in 15+ languages with secure API key management. Select code → Click floating button → Understand in your native language!",
     "version": "1.2.0",
     "publisher": "semicolonailabs",
     "author": {
@@ -20,11 +20,17 @@
         "ai",
         "code explanation",
         "openai",
+        "multi-language",
+        "bengali",
+        "arabic",
+        "spanish",
         "code understanding",
         "documentation",
         "learning",
         "programming",
-        "assistant"
+        "assistant",
+        "codelens",
+        "secure"
     ],
     "engines": {
         "vscode": "^1.70.0"
