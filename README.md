@@ -1,8 +1,8 @@
-# 🤖 CodIn - AI Code Explainer v1.2.0
+# 🤖 CodIn - AI Code Explainer v1.2.3
 
 **Get instant AI-powered explanations for any code snippet in 15+ languages with secure API key management!**
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/semicolonailabs/CodIn)
+[![Version](https://img.shields.io/badge/version-1.2.3-blue.svg)](https://github.com/semicolonailabs/CodIn)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![VS Code](https://img.shields.io/badge/VS%20Code-1.70+-orange.svg)](https://code.visualstudio.com/)
 
@@ -37,7 +37,7 @@
 
 ### 1. **Install Extension**
 ```bash
-# Download codin-1.2.0.vsix from releases
+# Download codin-1.2.3.vsix from releases
 # In VS Code: Cmd+Shift+P → "Extensions: Install from VSIX"
 ```
 
@@ -130,6 +130,24 @@ def factorial(n):
 - ✅ **No plain text storage**
 - ✅ **Auto-migration from .env files**
 
+## 📦 **Installation**
+
+### **From VS Code Marketplace (Recommended)**
+1. Open VS Code
+2. Go to Extensions view (`Cmd+Shift+X`)
+3. Search for "CodIn"
+4. Click "Install" on "CodIn - AI Code Explainer" by SemicolonAILabs
+
+### **From VSIX File**
+1. Download the latest `codin-1.2.3.vsix` from [GitHub Releases](https://github.com/semicolonailabs/CodIn/releases)
+2. In VS Code: `Cmd+Shift+P` → "Extensions: Install from VSIX..."
+3. Select the downloaded file
+
+### **Requirements**
+- VS Code 1.70.0 or higher
+- OpenAI API key (get one from [OpenAI Platform](https://platform.openai.com/api-keys))
+- Internet connection for AI explanations
+
 ## ⚙️ **Configuration**
 
 ### **Available Settings:**
@@ -161,13 +179,47 @@ def factorial(n):
 - ❌ Personal information
 - ❌ Usage analytics
 
-## 🤝 Contributing
+## 🛠️ **Development**
 
-We welcome contributions! See our [GitHub repository](https://github.com/semicolonailabs/CodIn) for:
-- 🐛 Bug reports
-- 💡 Feature requests  
-- 🔧 Pull requests
-- 📚 Documentation improvements
+### **Setup for Development**
+```bash
+# Clone the repository
+git clone https://github.com/semicolonailabs/CodIn.git
+cd CodIn
+
+# Install dependencies
+npm install
+
+# Compile TypeScript
+npm run compile
+
+# Watch for changes
+npm run watch
+
+# Package extension
+npm run package
+
+# Run linting
+npm run lint
+```
+
+### **Testing**
+```bash
+# Install locally for testing
+code --install-extension codin-1.2.3.vsix
+
+# Or press F5 in VS Code to launch Extension Development Host
+```
+
+## 🤝 **Contributing**
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+Quick links:
+- 🐛 [Report Bugs](https://github.com/semicolonailabs/CodIn/issues/new?template=bug_report.yml)
+- 💡 [Request Features](https://github.com/semicolonailabs/CodIn/issues/new?template=feature_request.yml)  
+- 🔧 [Pull Requests](https://github.com/semicolonailabs/CodIn/pulls)
+- 📚 [Documentation](https://github.com/semicolonailabs/CodIn/wiki)
 
 ## 📄 License
 

@@ -1,0 +1,141 @@
+name: Bug Report
+description: File a bug report to help us improve CodIn
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! 
+        
+        Please search existing issues before creating a new one.
+
+  - type: input
+    id: version
+    attributes:
+      label: CodIn Version
+      description: What version of CodIn are you using?
+      placeholder: "1.2.3"
+    validations:
+      required: true
+
+  - type: input
+    id: vscode-version
+    attributes:
+      label: VS Code Version
+      description: What version of VS Code are you using?
+      placeholder: "1.84.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What operating system are you using?
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: "When I select code and right-click, the 'Explain Code with AI' option doesn't appear..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Open VS Code
+        2. Select some code
+        3. Right-click
+        4. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: "The context menu should show 'Explain Code with AI' option..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: "The context menu doesn't show the option, or shows an error..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: console-output
+    attributes:
+      label: Console Output
+      description: Any relevant output from VS Code Developer Console (Help > Toggle Developer Tools)
+      render: shell
+      placeholder: "Paste any error messages or console output here..."
+
+  - type: textarea
+    id: extension-logs
+    attributes:
+      label: Extension Logs
+      description: Any relevant logs from the Extension Development Host or Output panel
+      render: shell
+      placeholder: "Paste any extension-related logs here..."
+
+  - type: dropdown
+    id: programming-language
+    attributes:
+      label: Programming Language
+      description: What programming language were you working with?
+      options:
+        - JavaScript
+        - TypeScript
+        - Python
+        - Java
+        - C++
+        - C#
+        - Go
+        - Rust
+        - PHP
+        - Ruby
+        - Swift
+        - Kotlin
+        - Other
+        - Not applicable
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm the following before submitting
+      options:
+        - label: I have searched existing issues for duplicates
+          required: true
+        - label: I am using the latest version of CodIn
+          required: true
+        - label: "I have tried reloading VS Code window (Cmd/Ctrl+Shift+P > Developer: Reload Window)"
+          required: true
+        - label: I have provided all necessary information above
+          required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+      placeholder: "Screenshots, configuration details, related issues, etc..."

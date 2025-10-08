@@ -20,18 +20,27 @@
                     <li><a href="#usage">Usage</a></li>
                     <li><a href="#languages">Supported Languages</a></li>
                     <li><a href="#configuration">Configuration</a></li>
+                    <li><a href="#advanced">Advanced Features</a></li>
                     <li><a href="#troubleshooting">Troubleshooting</a></li>
                 </ul>
             </nav>
             <div class="version-info">
-                <span>Version 1.0.0</span>
-                <span>Last updated: 2025-09-30</span>
+                <span>Version 1.2.3</span>
+                <span>Last updated: 2025-10-08</span>
             </div>
         </aside>
         <main class="content">
             <section id="introduction">
                 <h1>Introduction</h1>
-                <p>CodIn is a VS Code extension that brings the power of AI to your code editor. It allows you to select any code snippet and get a clear, concise explanation in plain English. This helps you understand complex code faster, learn new languages, and improve your overall productivity.</p>
+                <p>CodIn is a powerful VS Code extension that brings AI-powered code explanations directly to your editor. Get instant, clear explanations of any code snippet in over 15 languages including English, Spanish, French, German, Hindi, Chinese, Japanese, and more. Whether you're learning a new programming language, working with complex algorithms, or onboarding to a new codebase, CodIn helps you understand code faster and boost your productivity.</p>
+                <p><strong>Key Features:</strong></p>
+                <ul>
+                    <li>🤖 AI-powered code explanations using OpenAI GPT-3.5-turbo</li>
+                    <li>🌍 Multi-language support (15+ explanation languages)</li>
+                    <li>🔒 Secure API key management with VS Code Secret Storage</li>
+                    <li>⚡ Multiple access methods: CodeLens, context menu, and keyboard shortcuts</li>
+                    <li>🎯 Real-time UI updates and progress indicators</li>
+                </ul>
             </section>
             <section id="installation">
                 <h2>Installation</h2>
@@ -45,46 +54,247 @@
             </section>
             <section id="usage">
                 <h2>Usage</h2>
-                <p>Using CodIn is simple and intuitive:</p>
+                <p>CodIn offers multiple ways to get code explanations:</p>
+                
+                <h3>Method 1: Context Menu (Right-click)</h3>
                 <ol>
-                    <li>Open any code file in a supported language.</li>
-                    <li>Select the code snippet you want to understand.</li>
-                    <li>Right-click on the selection.</li>
-                    <li>Choose "Explain Code" from the context menu.</li>
-                    <li>The AI-generated explanation will appear in a new webview panel.</li>
+                    <li>Select any code snippet in your editor</li>
+                    <li>Right-click on the selection</li>
+                    <li>Choose "Explain Code" from the context menu</li>
+                    <li>View the explanation in a new panel</li>
                 </ol>
+
+                <h3>Method 2: CodeLens (Inline)</h3>
+                <ol>
+                    <li>Open any code file - CodeLens appears automatically</li>
+                    <li>Click "Explain" above functions, classes, or code blocks</li>
+                    <li>Get instant explanations without selecting text</li>
+                </ol>
+
+                <h3>Method 3: Command Palette</h3>
+                <ol>
+                    <li>Press <code>Ctrl+Shift+P</code> (or <code>Cmd+Shift+P</code> on Mac)</li>
+                    <li>Type "CodIn" to see all available commands</li>
+                    <li>Choose from explain, translate, or configuration options</li>
+                </ol>
+
+                <h3>Method 4: Keyboard Shortcuts</h3>
+                <ul>
+                    <li><code>Ctrl+Alt+E</code> - Explain selected code</li>
+                    <li><code>Ctrl+Alt+L</code> - Select explanation language</li>
+                    <li><code>Ctrl+Alt+A</code> - Set OpenAI API key</li>
+                </ul>
             </section>
             <section id="languages">
                 <h2>Supported Languages</h2>
-                <p>CodIn supports a wide range of popular programming languages:</p>
+                
+                <h3>Programming Languages</h3>
+                <p>CodIn works with all programming languages supported by VS Code, including:</p>
                 <ul>
+                    <li>JavaScript & TypeScript</li>
                     <li>Python</li>
-                    <li>JavaScript</li>
-                    <li>Java</li>
-                    <li>C#</li>
-                    <li>C++</li>
-                    <li>Go</li>
-                    <li>Ruby</li>
-                    <li>PHP</li>
-                    <li>TypeScript</li>
-                    <li>Swift</li>
+                    <li>Java & C#</li>
+                    <li>C & C++</li>
+                    <li>Go & Rust</li>
+                    <li>Ruby & PHP</li>
+                    <li>Swift & Kotlin</li>
+                    <li>HTML & CSS</li>
+                    <li>SQL & Bash</li>
+                    <li>And many more...</li>
                 </ul>
+
+                <h3>Explanation Languages</h3>
+                <p>Get explanations in your preferred language:</p>
+                <ul>
+                    <li>🇺🇸 English</li>
+                    <li>🇪🇸 Spanish (Español)</li>
+                    <li>🇫🇷 French (Français)</li>
+                    <li>🇩🇪 German (Deutsch)</li>
+                    <li>🇮🇳 Hindi (हिन्दी)</li>
+                    <li>🇧🇩 Bengali (বাংলা)</li>
+                    <li>🇸🇦 Arabic (العربية)</li>
+                    <li>🇨🇳 Chinese (中文)</li>
+                    <li>🇯🇵 Japanese (日本語)</li>
+                    <li>🇰🇷 Korean (한국어)</li>
+                    <li>🇵🇹 Portuguese (Português)</li>
+                    <li>🇷🇺 Russian (Русский)</li>
+                    <li>🇮🇹 Italian (Italiano)</li>
+                    <li>🇳🇱 Dutch (Nederlands)</li>
+                    <li>🇲🇾 Malay (Bahasa Melayu)</li>
+                </ul>
+                <p>Change your explanation language anytime using <code>Ctrl+Alt+L</code> or the Command Palette.</p>
             </section>
             <section id="configuration">
                 <h2>Configuration</h2>
-                <p>CodIn requires an OpenAI API key to function. You need to set this key as an environment variable named <code>OPENAI_API_KEY</code>.</p>
-                <pre><code>export OPENAI_API_KEY="your-api-key-here"</code></pre>
-                <p>Make sure to replace <code>"your-api-key-here"</code> with your actual OpenAI API key. You can add this line to your shell's configuration file (e.g., <code>.zshrc</code>, <code>.bash_profile</code>) to make it permanent.</p>
+                
+                <h3>Setting Up Your OpenAI API Key</h3>
+                <p>CodIn uses OpenAI's GPT-3.5-turbo model and requires an API key. Your key is stored securely using VS Code's Secret Storage (encrypted and never logged).</p>
+                
+                <h4>Easy Setup Methods:</h4>
+                <ol>
+                    <li><strong>Command Palette:</strong> Press <code>Ctrl+Shift+P</code>, type "CodIn: Set OpenAI API Key"</li>
+                    <li><strong>Keyboard Shortcut:</strong> Press <code>Ctrl+Alt+A</code></li>
+                    <li><strong>First Use:</strong> CodIn will automatically prompt you when you first try to explain code</li>
+                </ol>
+
+                <h4>Getting an OpenAI API Key:</h4>
+                <ol>
+                    <li>Visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a></li>
+                    <li>Sign in or create an account</li>
+                    <li>Click "Create new secret key"</li>
+                    <li>Copy your key and paste it into CodIn when prompted</li>
+                </ol>
+
+                <h3>Language Preferences</h3>
+                <p>Set your preferred explanation language:</p>
+                <ul>
+                    <li>Use <code>Ctrl+Alt+L</code> to change language quickly</li>
+                    <li>Or use Command Palette: "CodIn: Select Explanation Language"</li>
+                    <li>Your preference is saved automatically for future use</li>
+                </ul>
+
+                <h3>Security & Privacy</h3>
+                <ul>
+                    <li>🔒 API keys are encrypted using VS Code Secret Storage</li>
+                    <li>🚫 No code or explanations are logged locally</li>
+                    <li>🌐 Only selected code is sent to OpenAI for explanation</li>
+                    <li>🔐 All communications use HTTPS encryption</li>
+                </ul>
             </section>
+            
+            <section id="advanced">
+                <h2>Advanced Features</h2>
+                
+                <h3>🎯 Smart CodeLens</h3>
+                <p>CodIn automatically detects important code structures and shows "Explain" links:</p>
+                <ul>
+                    <li>Function and method definitions</li>
+                    <li>Class declarations</li>
+                    <li>Complex algorithms and loops</li>
+                    <li>Import/export statements</li>
+                </ul>
+
+                <h3>🔄 Real-time Updates</h3>
+                <p>The extension provides live feedback:</p>
+                <ul>
+                    <li>Progress indicators during explanation generation</li>
+                    <li>Dynamic CodeLens refresh when code changes</li>
+                    <li>Instant language switching without restart</li>
+                </ul>
+
+                <h3>⚡ Performance Optimizations</h3>
+                <ul>
+                    <li>Efficient API usage with optimized prompts</li>
+                    <li>Smart caching to reduce redundant requests</li>
+                    <li>Background processing for better responsiveness</li>
+                    <li>Minimal VS Code performance impact</li>
+                </ul>
+
+                <h3>🛠️ Available Commands</h3>
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                    <thead>
+                        <tr style="background-color: #f5f5f5;">
+                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Command</th>
+                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Shortcut</th>
+                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Explain Code</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;"><code>Ctrl+Alt+E</code></td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Explain selected code snippet</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Select Language</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;"><code>Ctrl+Alt+L</code></td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Change explanation language</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Set API Key</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;"><code>Ctrl+Alt+A</code></td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Configure OpenAI API key</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Toggle CodeLens</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">-</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Enable/disable inline explanations</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Clear API Key</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">-</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">Remove stored API key</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>🔒 Security Features</h3>
+                <ul>
+                    <li><strong>Encrypted Storage:</strong> API keys stored using VS Code Secret Storage</li>
+                    <li><strong>No Logging:</strong> Code and explanations never saved locally</li>
+                    <li><strong>Minimal Permissions:</strong> Only necessary VS Code API access</li>
+                    <li><strong>HTTPS Only:</strong> All communications encrypted in transit</li>
+                </ul>
+
+                <h3>🎨 Integration with VS Code</h3>
+                <ul>
+                    <li>Respects VS Code color themes and fonts</li>
+                    <li>Works with all VS Code language extensions</li>
+                    <li>Compatible with other productivity extensions</li>
+                    <li>Follows VS Code accessibility guidelines</li>
+                </ul>
+            </section>
+            
             <section id="troubleshooting">
                 <h2>Troubleshooting</h2>
-                <p>If you encounter any issues with CodIn, here are a few things to check:</p>
+                
+                <h3>Common Issues & Solutions</h3>
+                
+                <h4>❌ "Please set your OpenAI API key first"</h4>
                 <ul>
-                    <li><strong>No explanation appears:</strong> Ensure you have a valid OpenAI API key set as the <code>OPENAI_API_KEY</code> environment variable.</li>
-                    <li><strong>"Explain Code" option is missing:</strong> Make sure you have selected a piece of code before right-clicking.</li>
-                    <li><strong>Error message on explanation:</strong> Check your internet connection and ensure the OpenAI API is accessible.</li>
+                    <li>Use <code>Ctrl+Alt+A</code> to set your API key</li>
+                    <li>Make sure you copied the complete key from OpenAI</li>
+                    <li>Verify your OpenAI account has API credits available</li>
                 </ul>
-                <p>If you continue to experience problems, please report a bug on our GitHub repository.</p>
+
+                <h4>❌ CodeLens not appearing</h4>
+                <ul>
+                    <li>Check that CodeLens is enabled in VS Code settings</li>
+                    <li>Try reloading the window: <code>Ctrl+Shift+P</code> → "Developer: Reload Window"</li>
+                    <li>Ensure you're in a supported file type</li>
+                </ul>
+
+                <h4>❌ "Explain Code" option missing from context menu</h4>
+                <ul>
+                    <li>Make sure you have text selected before right-clicking</li>
+                    <li>Check that the extension is enabled in Extensions view</li>
+                    <li>Try using CodeLens or Command Palette instead</li>
+                </ul>
+
+                <h4>❌ Network or API errors</h4>
+                <ul>
+                    <li>Check your internet connection</li>
+                    <li>Verify OpenAI API status at <a href="https://status.openai.com" target="_blank">status.openai.com</a></li>
+                    <li>Check if your API key has sufficient credits</li>
+                    <li>Try again in a few minutes (rate limiting)</li>
+                </ul>
+
+                <h4>❌ Performance issues</h4>
+                <ul>
+                    <li>Large code selections may take longer to process</li>
+                    <li>Try explaining smaller code snippets</li>
+                    <li>Check VS Code's output panel for any error messages</li>
+                </ul>
+
+                <h3>Debug Information</h3>
+                <p>When reporting issues, please include:</p>
+                <ul>
+                    <li>CodIn version: <strong>1.2.3</strong></li>
+                    <li>VS Code version</li>
+                    <li>Operating system</li>
+                    <li>Programming language being explained</li>
+                    <li>Error messages from VS Code Output panel</li>
+                </ul>
             </section>
         </main>
     </div>

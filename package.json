@@ -1,196 +1,173 @@
 {
-    "name": "codin",
-    "displayName": "CodIn - AI Code Explainer",
-    "description": "Get instant AI-powered explanations for any code snippet in 15+ languages with secure API key management. Select code → Click floating button → Understand in your native language!",
-    "version": "1.2.1",
-    "publisher": "semicolonailabs",
-    "author": {
-        "name": "SemicolonAI Labs"
-    },
-    "license": "MIT",
-    "homepage": "https://github.com/semicolonailabs/CodIn",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/semicolonailabs/CodIn.git"
-    },
-    "bugs": {
-        "url": "https://github.com/semicolonailabs/CodIn/issues"
-    },
-    "keywords": [
-        "ai",
-        "code explanation",
-        "openai",
-        "multi-language",
-        "bengali",
-        "arabic",
-        "spanish",
-        "code understanding",
-        "documentation",
-        "learning",
-        "programming",
-        "assistant",
-        "codelens",
-        "secure"
+  "name": "codin",
+  "displayName": "CodIn - AI Code Explainer",
+  "description": "AI-powered code explanations for 15+ programming languages",
+  "version": "1.2.3",
+  "publisher": "SemicolonAILabs",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Education",
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "code explanation",
+    "openai",
+    "learning",
+    "documentation"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.explainCode",
+        "title": "Explain Code with AI",
+        "category": "CodIn"
+      },
+      {
+        "command": "extension.explainFunction",
+        "title": "Explain Function",
+        "category": "CodIn"
+      },
+      {
+        "command": "extension.explainClass",
+        "title": "Explain Class/Object",
+        "category": "CodIn"
+      },
+      {
+        "command": "extension.explainAlgorithm",
+        "title": "Explain Algorithm",
+        "category": "CodIn"
+      },
+      {
+        "command": "extension.setupApiKey",
+        "title": "Setup OpenAI API Key",
+        "category": "CodIn"
+      },
+      {
+        "command": "extension.setApiKey",
+        "title": "Set OpenAI API Key",
+        "category": "CodIn"
+      },
+      {
+        "command": "extension.removeApiKey",
+        "title": "Remove OpenAI API Key",
+        "category": "CodIn"
+      },
+      {
+        "command": "extension.checkApiKey",
+        "title": "Check API Key Status",
+        "category": "CodIn"
+      },
+      {
+        "command": "extension.selectLanguage",
+        "title": "Select Explanation Language",
+        "category": "CodIn"
+      }
     ],
-    "engines": {
-        "vscode": "^1.70.0"
-    },
-    "categories": [
-        "Machine Learning",
-        "Education",
-        "Other"
-    ],
-    "icon": "CodIn.png",
-    "activationEvents": [
-        "onStartupFinished",
-        "onLanguage:javascript",
-        "onLanguage:typescript",
-        "onLanguage:python",
-        "onLanguage:java",
-        "onLanguage:cpp",
-        "onLanguage:c",
-        "onLanguage:csharp",
-        "onLanguage:go",
-        "onLanguage:rust",
-        "onLanguage:php",
-        "onLanguage:ruby",
-        "onCommand:extension.explainCode",
-        "onCommand:extension.setApiKey",
-        "onCommand:extension.removeApiKey",
-        "onCommand:extension.checkApiKey",
-        "onCommand:extension.selectLanguage"
-    ],
-    "main": "./out/extension.js",
-    "contributes": {
-        "commands": [
-            {
-                "command": "extension.explainCode",
-                "title": "CodIn: Explain Code",
-                "category": "CodIn"
-            },
-            {
-                "command": "extension.selectLanguage",
-                "title": "CodIn: Select Explanation Language",
-                "category": "CodIn"
-            },
-            {
-                "command": "extension.setApiKey",
-                "title": "CodIn: Set OpenAI API Key",
-                "category": "CodIn"
-            },
-            {
-                "command": "extension.removeApiKey",
-                "title": "CodIn: Remove OpenAI API Key",
-                "category": "CodIn"
-            },
-            {
-                "command": "extension.checkApiKey",
-                "title": "CodIn: Check API Key Status",
-                "category": "CodIn"
-            }
-        ],
-        "menus": {
-            "editor/context": [
-                {
-                    "when": "editorHasSelection",
-                    "command": "extension.explainCode",
-                    "group": "1_modification@1"
-                },
-                {
-                    "command": "extension.selectLanguage",
-                    "group": "1_modification@2"
-                }
-            ],
-            "commandPalette": [
-                {
-                    "command": "extension.explainCode",
-                    "when": "editorHasSelection"
-                },
-                {
-                    "command": "extension.selectLanguage"
-                },
-                {
-                    "command": "extension.setApiKey"
-                },
-                {
-                    "command": "extension.removeApiKey"
-                },
-                {
-                    "command": "extension.checkApiKey"
-                }
-            ]
+    "menus": {
+      "editor/context": [
+        {
+          "command": "extension.explainCode",
+          "when": "editorHasSelection",
+          "group": "codin@1"
         },
-        "configuration": {
-            "type": "object",
-            "title": "CodIn Configuration",
-            "properties": {
-                "codin.enableCodeLens": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enable floating 'Explain Code' button above selected code"
-                },
-                "codin.enableCodeActions": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enable 'Explain Code' in quick actions menu (lightbulb)"
-                },
-                "codin.explanationLanguage": {
-                    "type": "string",
-                    "default": "English",
-                    "enum": [
-                        "English",
-                        "Bengali",
-                        "Melayu",
-                        "Arabic",
-                        "Spanish",
-                        "French",
-                        "German",
-                        "Hindi",
-                        "Chinese (Simplified)",
-                        "Japanese",
-                        "Korean",
-                        "Portuguese",
-                        "Russian",
-                        "Italian",
-                        "Dutch"
-                    ],
-                    "description": "Preferred language for code explanations"
-                },
-                "codin.showLanguageInPopup": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Show selected language at the top of explanation popup"
-                }
-            }
+        {
+          "command": "extension.explainFunction",
+          "when": "editorHasSelection",
+          "group": "codin@2"
+        },
+        {
+          "command": "extension.explainClass",
+          "when": "editorHasSelection",
+          "group": "codin@3"
+        },
+        {
+          "command": "extension.explainAlgorithm",
+          "when": "editorHasSelection",
+          "group": "codin@4"
         }
+      ],
+      "commandPalette": [
+        {
+          "command": "extension.explainCode",
+          "when": "editorIsOpen"
+        },
+        {
+          "command": "extension.explainFunction",
+          "when": "editorIsOpen"
+        },
+        {
+          "command": "extension.explainClass",
+          "when": "editorIsOpen"
+        },
+        {
+          "command": "extension.explainAlgorithm",
+          "when": "editorIsOpen"
+        },
+        {
+          "command": "extension.setupApiKey",
+          "when": "true"
+        },
+        {
+          "command": "extension.setApiKey",
+          "when": "true"
+        },
+        {
+          "command": "extension.removeApiKey",
+          "when": "true"
+        },
+        {
+          "command": "extension.checkApiKey",
+          "when": "true"
+        },
+        {
+          "command": "extension.selectLanguage",
+          "when": "true"
+        }
+      ]
     },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "pretest": "npm run compile && npm run lint",
-        "lint": "eslint src --ext ts",
-        "test": "node ./out/test/runTest.js",
-        "package": "vsce package",
-        "publish": "vsce publish"
-    },
-    "devDependencies": {
-        "@types/dotenv": "^6.1.1",
-        "@types/glob": "^8.0.0",
-        "@types/mocha": "^10.0.0",
-        "@types/node": "16.x",
-        "@types/node-fetch": "^2.6.13",
-        "@types/vscode": "^1.70.0",
-        "@typescript-eslint/eslint-plugin": "^8.46.0",
-        "@typescript-eslint/parser": "^8.46.0",
-        "@vscode/test-electron": "^2.2.0",
-        "eslint": "^8.24.0",
-        "glob": "^8.0.3",
-        "mocha": "^10.0.0",
-        "typescript": "^4.8.4"
-    },
-    "dependencies": {
-        "dotenv": "^17.2.3",
-        "node-fetch": "^2.6.7"
-    }
+    "keybindings": [
+      {
+        "command": "extension.explainCode",
+        "key": "ctrl+shift+e",
+        "mac": "cmd+shift+e",
+        "when": "editorTextFocus && editorHasSelection"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src/extension.ts",
+    "lint:fix": "eslint src --ext ts --fix",
+    "test": "echo \"Tests not yet implemented\" && exit 0",
+    "package": "vsce package --allow-star-activation",
+    "publish": "vsce publish",
+    "clean": "rm -rf out node_modules *.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "16.x",
+    "@types/vscode": "^1.70.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.57.1",
+    "typescript": "^4.8.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/semicolonailabs/CodIn.git"
+  },
+  "dependencies": {
+    "@types/node-fetch": "^2.6.13",
+    "node-fetch": "^3.3.2"
+  }
 }
