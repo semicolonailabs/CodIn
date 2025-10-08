@@ -2,7 +2,7 @@
     "name": "codin",
     "displayName": "CodIn - AI Code Explainer",
     "description": "Get instant AI-powered explanations for any code snippet. Right-click, select 'Explain Code', and understand complex code in seconds.",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "publisher": "semicolonailabs",
     "author": {
         "name": "SemicolonAI Labs"
@@ -66,6 +66,21 @@
                 "command": "extension.explainCodeWithLanguage",
                 "title": "CodIn: Explain Code in Selected Language",
                 "category": "CodIn"
+            },
+            {
+                "command": "extension.setApiKey",
+                "title": "CodIn: Set OpenAI API Key",
+                "category": "CodIn"
+            },
+            {
+                "command": "extension.removeApiKey",
+                "title": "CodIn: Remove OpenAI API Key",
+                "category": "CodIn"
+            },
+            {
+                "command": "extension.checkApiKey",
+                "title": "CodIn: Check API Key Status",
+                "category": "CodIn"
             }
         ],
         "menus": {
@@ -87,6 +102,15 @@
                 },
                 {
                     "command": "extension.selectLanguage"
+                },
+                {
+                    "command": "extension.setApiKey"
+                },
+                {
+                    "command": "extension.removeApiKey"
+                },
+                {
+                    "command": "extension.checkApiKey"
                 }
             ]
         },

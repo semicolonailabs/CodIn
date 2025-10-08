@@ -3,6 +3,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 import fetch from 'node-fetch';
 
+// Constants
+const API_KEY_SECRET_KEY = 'codin.openai.apikey';
+
 // Supported languages with their display names and prompts
 const SUPPORTED_LANGUAGES = {
     'English': 'English',
@@ -122,6 +125,27 @@ class CodInCodeLensProvider implements vscode.CodeLensProvider {
     }
 }
 
+// Helper function to get API key from secure storage
+async function getApiKey(context: vscode.ExtensionContext): Promise<string | undefined> {
+    const apiKey = await context.secrets.get(API_KEY_SECRET_KEY);
+    return apiKey;
+}
+
+// Helper function to set API key in secure storage
+async function setApiKey(context: vscode.ExtensionContext, apiKey: string): Promise<void> {
+    await context.secrets.store(API_KEY_SECRET_KEY, apiKey);
+}
+
+// Helper function to remove API key from secure storage
+async function removeApiKey(context: vscode.ExtensionContext): Promise<void> {
+    await context.secrets.delete(API_KEY_SECRET_KEY);
+}
+
+// Helper function to validate API key format
+function validateApiKey(apiKey: string): boolean {
+    return !!(apiKey && apiKey.trim().length > 0 && apiKey.startsWith('sk-'));
+}
+
 export function activate(context: vscode.ExtensionContext) {
     // Create CodeLens provider instance
     const codeLensProvider = new CodInCodeLensProvider();
@@ -144,6 +168,101 @@ export function activate(context: vscode.ExtensionContext) {
     // Listen for selection changes to refresh CodeLens
     const selectionChangeListener = vscode.window.onDidChangeTextEditorSelection(() => {
         codeLensProvider.refresh();
+    });
+
+    // Register API key setup command
+    const setApiKeyDisposable = vscode.commands.registerCommand('extension.setApiKey', async () => {
+        const apiKey = await vscode.window.showInputBox({
+            prompt: 'Enter your OpenAI API Key',
+            placeHolder: 'sk-...',
+            password: true, // Masks the input for security
+            ignoreFocusOut: true,
+            validateInput: (value: string) => {
+                if (!value || value.trim().length === 0) {
+                    return 'API key cannot be empty';
+                }
+                if (!value.startsWith('sk-')) {
+                    return 'OpenAI API keys must start with "sk-"';
+                }
+                if (value.length < 20) {
+                    return 'API key appears to be too short';
+                }
+                return undefined; // Valid
+            }
+        });
+
+        if (apiKey) {
+            try {
+                await setApiKey(context, apiKey.trim());
+                vscode.window.showInformationMessage(
+                    '✅ OpenAI API Key saved successfully!',
+                    'Test with Code'
+                ).then((action) => {
+                    if (action === 'Test with Code') {
+                        vscode.commands.executeCommand('extension.explainCode');
+                    }
+                });
+            } catch (error) {
+                vscode.window.showErrorMessage(`❌ Failed to save API key: ${error}`);
+            }
+        }
+    });
+
+    // Register API key removal command
+    const removeApiKeyDisposable = vscode.commands.registerCommand('extension.removeApiKey', async () => {
+        const currentKey = await getApiKey(context);
+        
+        if (!currentKey) {
+            vscode.window.showInformationMessage('ℹ️ No API key is currently stored.');
+            return;
+        }
+
+        const confirm = await vscode.window.showWarningMessage(
+            'Are you sure you want to remove the stored OpenAI API key?',
+            { modal: true },
+            'Remove Key'
+        );
+
+        if (confirm === 'Remove Key') {
+            try {
+                await removeApiKey(context);
+                vscode.window.showInformationMessage('✅ OpenAI API Key removed successfully!');
+            } catch (error) {
+                vscode.window.showErrorMessage(`❌ Failed to remove API key: ${error}`);
+            }
+        }
+    });
+
+    // Register API key check command
+    const checkApiKeyDisposable = vscode.commands.registerCommand('extension.checkApiKey', async () => {
+        const apiKey = await getApiKey(context);
+        
+        if (apiKey) {
+            const maskedKey = apiKey.substring(0, 7) + '...' + apiKey.substring(apiKey.length - 4);
+            vscode.window.showInformationMessage(
+                `✅ API Key Status: Connected\n🔑 Key: ${maskedKey}`,
+                'Test Connection',
+                'Remove Key'
+            ).then((action) => {
+                if (action === 'Test Connection') {
+                    vscode.commands.executeCommand('extension.explainCode');
+                } else if (action === 'Remove Key') {
+                    vscode.commands.executeCommand('extension.removeApiKey');
+                }
+            });
+        } else {
+            vscode.window.showWarningMessage(
+                '⚠️ No API Key Found\nPlease set your OpenAI API key to use CodIn.',
+                'Set API Key',
+                'Learn More'
+            ).then((action) => {
+                if (action === 'Set API Key') {
+                    vscode.commands.executeCommand('extension.setApiKey');
+                } else if (action === 'Learn More') {
+                    vscode.env.openExternal(vscode.Uri.parse('https://platform.openai.com/api-keys'));
+                }
+            });
+        }
     });
 
     // Register language selection command
@@ -180,48 +299,60 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Register the explain code command
     let disposable = vscode.commands.registerCommand('extension.explainCode', async () => {
-        // Get workspace folder
-        const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-        if (!workspaceFolder) {
-            vscode.window.showErrorMessage('Please open a workspace folder to use CodIn.');
-            return;
+        // Get API key from secure storage
+        let apiKey = await getApiKey(context);
+
+        // Fallback: Try to get from .env file if not in secure storage (backward compatibility)
+        if (!apiKey) {
+            const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+            if (workspaceFolder) {
+                const env = loadEnvFile(workspaceFolder);
+                apiKey = env.OPENAI_API_KEY;
+                
+                // If found in .env, offer to migrate to secure storage
+                if (apiKey && validateApiKey(apiKey)) {
+                    const migrate = await vscode.window.showInformationMessage(
+                        'Found API key in .env file. Would you like to migrate to secure storage?',
+                        'Yes, Migrate',
+                        'Keep .env',
+                        'Not Now'
+                    );
+                    
+                    if (migrate === 'Yes, Migrate') {
+                        await setApiKey(context, apiKey);
+                        vscode.window.showInformationMessage('✅ API key migrated to secure storage!');
+                    }
+                }
+            }
         }
 
-        // Load environment variables from .env file
-        const env = loadEnvFile(workspaceFolder);
-        let apiKey = env.OPENAI_API_KEY;
-
         if (!apiKey) {
-            // Show helpful message about .env file
             const action = await vscode.window.showErrorMessage(
-                'OpenAI API key not found. Please create a .env file in your workspace root with your API key.',
-                'Create .env file',
-                'Learn more'
+                'OpenAI API key not found. Please set your API key to use CodIn.',
+                'Set API Key',
+                'Learn More'
             );
 
-            if (action === 'Create .env file') {
-                // Create .env file from template
-                const envPath = path.join(workspaceFolder, '.env');
-                const envContent = `# OpenAI API Configuration
-# Get your API key from: https://platform.openai.com/api-keys
-OPENAI_API_KEY=your_openai_api_key_here`;
-
-                try {
-                    fs.writeFileSync(envPath, envContent);
-                    const doc = await vscode.workspace.openTextDocument(envPath);
-                    await vscode.window.showTextDocument(doc);
-                    vscode.window.showInformationMessage('Please replace "your_openai_api_key_here" with your actual API key from OpenAI.');
-                } catch (error) {
-                    vscode.window.showErrorMessage(`Failed to create .env file: ${error}`);
-                }
-            } else if (action === 'Learn more') {
+            if (action === 'Set API Key') {
+                await vscode.commands.executeCommand('extension.setApiKey');
+            } else if (action === 'Learn More') {
                 vscode.env.openExternal(vscode.Uri.parse('https://platform.openai.com/api-keys'));
             }
             return;
         }
 
-        if (apiKey === 'your_openai_api_key_here' || apiKey === 'sk-test_replace_with_your_actual_key_here' || !apiKey.startsWith('sk-')) {
-            vscode.window.showErrorMessage('Please set a valid OpenAI API key in your .env file. The key should start with "sk-".');
+        if (!validateApiKey(apiKey)) {
+            const action = await vscode.window.showErrorMessage(
+                'Invalid API key format. OpenAI API keys must start with "sk-".',
+                'Set New Key',
+                'Check Key Status'
+            );
+            
+            if (action === 'Set New Key') {
+                await vscode.commands.executeCommand('extension.setApiKey');
+            } else if (action === 'Check Key Status') {
+                await vscode.commands.executeCommand('extension.checkApiKey');
+            }
             return;
         }
 
@@ -278,6 +409,9 @@ OPENAI_API_KEY=your_openai_api_key_here`;
     });
 
     context.subscriptions.push(disposable);
+    context.subscriptions.push(setApiKeyDisposable);
+    context.subscriptions.push(removeApiKeyDisposable);
+    context.subscriptions.push(checkApiKeyDisposable);
     context.subscriptions.push(selectLanguageDisposable);
     context.subscriptions.push(codeActionProvider);
     context.subscriptions.push(codeLensProviderDisposable);
@@ -440,7 +574,9 @@ function getWebviewContent(explanation: string, code: string, language: string =
         </div>
         
         <div style="margin-top: 20px; padding: 10px; background-color: var(--vscode-textBlockQuote-background); border-radius: 4px; font-size: 12px; color: var(--vscode-descriptionForeground);">
-            💡 Want explanations in a different language? Use <strong>Cmd+Shift+P</strong> → <strong>"CodIn: Select Explanation Language"</strong>
+            💡 <strong>Quick Commands:</strong><br>
+            • Different language? <strong>Cmd+Shift+P</strong> → <strong>"CodIn: Select Explanation Language"</strong><br>
+            • Manage API key? <strong>Cmd+Shift+P</strong> → <strong>"CodIn: Set OpenAI API Key"</strong>
         </div>
     </body>
     </html>`;

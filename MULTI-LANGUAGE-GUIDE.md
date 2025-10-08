@@ -48,6 +48,22 @@ Your CodIn extension now supports **15 languages** for code explanations! Get AI
 
 ---
 
+## 🔐 **NEW in v1.2.0: Secure API Key Setup!**
+
+**No more .env file editing!** Set your OpenAI API key securely:
+
+1. **Press `Cmd+Shift+P`**
+2. **Type: "CodIn: Set OpenAI API Key"**
+3. **Enter your key** (password-masked for security)
+4. **Done!** Key stored in VS Code Secret Storage (encrypted)
+
+**Quick Commands:**
+- **Set Key**: `CodIn: Set OpenAI API Key`
+- **Check Status**: `CodIn: Check API Key Status`  
+- **Remove Key**: `CodIn: Remove OpenAI API Key`
+
+---
+
 ## ✨ **What's New in v1.1.0:**
 
 ### 🎯 **Smart Language Display:**
