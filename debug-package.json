@@ -1,0 +1,29 @@
+{
+    "name": "codin-debug",
+    "displayName": "CodIn Debug Extension",
+    "version": "1.0.0",
+    "publisher": "debug",
+    "engines": {
+        "vscode": "^1.70.0"
+    },
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./debug-extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "debug.testRegistration",
+                "title": "Debug: Test Command Registration"
+            },
+            {
+                "command": "debug.checkCodInCommands",
+                "title": "Debug: Check CodIn Commands"
+            },
+            {
+                "command": "debug.activateCodIn",
+                "title": "Debug: Force Activate CodIn"
+            }
+        ]
+    }
+}
